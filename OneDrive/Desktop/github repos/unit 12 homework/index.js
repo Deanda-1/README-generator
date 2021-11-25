@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-var db = mysql.createConnection(
+const db = mysql.createConnection(
   {
     host: 'localhost',
     user: 'root',
@@ -183,8 +183,8 @@ const addEmployee= async() => {
             function(err,res){
               if (err) throw err;
               employees = res; //store results
-              var employee_list = []; // employee_list is for the inquirer prompt
-              var employee_id = []; // employee_id is for retrieving the employee ID number after prompt
+              let employee_list = []; // employee_list is for the inquirer prompt
+              let employee_id = []; // employee_id is for retrieving the employee ID number after prompt
               for (i=0; i< employees.length; i++){  // iterating through the employees to redefine indexes
                 // employee_list is for the inquirer prompt
                 employee_list.push ( employees[i].first_name + " " +  employees[i].last_name );
@@ -192,7 +192,7 @@ const addEmployee= async() => {
                 // employee_id is for retrieving the employee ID number after prompt
                 employee_id[employees[i].id] = employees[i].first_name + " " +  employees[i].last_name;
               }
-              employee_list.push ("NULL");
+              employee_list.push ("NULL"); // allowing a null employee instead of amanager
 
               inquirer.prompt({
                 type: "list",
@@ -201,10 +201,10 @@ const addEmployee= async() => {
                 choices: employee_list
               }).then(function(emp_ans){
                 // console.log(employee_id.indexOf(emp_ans.employee));
-                if (emp_ans.employee != "NULL") {
+                if (emp_ans.employee != "NULL") { // the employee is not equal to manager
                   emp_id = employee_id.indexOf(emp_ans.employee);
                 } else {
-                  emp_id = null;
+                  emp_id = null; // 
                 }
                 
 
@@ -234,8 +234,8 @@ function updEmployeeRole(){
     function(err,res){
       if (err) throw err;
       employees = res; //store results
-      var employee_list = []; // employee_list is for the inquirer prompt
-      var employee_id = []; // employee_id is for retrieving the employee ID number after prompt
+      let employee_list = []; // employee_list is for the inquirer prompt
+      let employee_id = []; // employee_id is for retrieving the employee ID number after prompt
       for (i=0; i< employees.length; i++){  // iterating through the employees to redefine indexes
         // employee_list is for the inquirer prompt
         employee_list.push ( employees[i].first_name + " " +  employees[i].last_name );
@@ -258,21 +258,21 @@ function updEmployeeRole(){
         function(err,res){
           if (err) throw err;
           roles = res;
-          var role_id = [];
-          var role_list = [];
+          let role_id = [];
+          let role_list = [];
           for (j=0;j<res.length;j++) { // what would cause ".length" to be underlined
             role_list.push ( roles[j].role_title + " ( $" +  roles[j].salary + " )");
             role_id[roles[j].id] = roles[j].role_title + " ( $" +  roles[j].salary + " )";
           }
-          inquirer.prompt({
+          inquirer.prompt({ // this part of the program is showing how to present the data and the relationship with the role
             type: "list",
             message: "Select Role & Salary:",
             name: "rolename",
             choices: role_list
           }).then(function(role_ans){
-
+             // getting rol_id from the printed text
             role_id = role_id.indexOf(role_ans.rolename);
-
+             
             // now that we have emp_id and role_id, we can query.
             db.query("UPDATE employee SET role_id = ? WHERE id = ?", [role_id, emp_id],
               function(err,res){ // is there an other way to change the underline from showing up
