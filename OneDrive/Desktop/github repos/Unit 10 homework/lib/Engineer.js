@@ -1,16 +1,17 @@
-class Manager extends Engineer {
-    constructor(name, id, email) {
-      this.officeNumber = this.officeNumber;
+const Employee = require("./Employee");
+
+class Engineer extends Employee {
+    constructor(name, id, email, github) {
+      super(name, id, email)
+      this.github = github;
       
     }
        getGithub(){
-      return this.getGithub
+      return this.github
     }
-    getHubUserName(){
-      return getGithubUserName
-    }
+   
     getRole(){
-      return Engineer
+      return 'Engineer'
     }
   }
   

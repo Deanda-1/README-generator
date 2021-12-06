@@ -1,6 +1,9 @@
-class Manager extends Intern {
-    constructor(name, id, email) {
-      this.officeNumber = this.officeNumber;
+const Employee = require("./Employee");
+
+class Intern extends Employee {
+    constructor(name, id, email, school) {
+      super(name, id, email)
+      this.school = school;
           
     }
        school(){
@@ -9,6 +12,9 @@ class Manager extends Intern {
        getSchool(){
            return this.school
        }
+       getRole(){
+        return 'Intern'
+      }
   }
   
-  module.exports = Manager;
+  module.exports = Intern;
